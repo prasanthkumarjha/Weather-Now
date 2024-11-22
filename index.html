@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Weather Now provides accurate, real-time weather updates, extended forecasts, and location-based weather data. Stay prepared with our user-friendly app."
+      content="Weather Update provides accurate, real-time weather updates, extended forecasts, and location-based weather data. Stay prepared with our user-friendly app."
     />
     <meta
       name="keywords"
@@ -14,7 +14,7 @@
     />
     <meta name="author" content="Prasanth" />
     <!-- Title -->
-    <title>Weather Now - Real-Time Weather Updates</title>
+    <title>Weather Update - Real-Time Weather Updates</title>
     <!-- CSS link -->
     <link rel="stylesheet" href="./style.css" />
     <!-- fav icon -->
@@ -33,7 +33,7 @@
       >
         <!-- Header -->
         <header class="text-white text-center py-4">
-          <h1 class="text-5xl font-extrabold drop-shadow-lg">Weather Now</h1>
+          <h1 class="text-5xl font-extrabold drop-shadow-lg">Weather Update</h1>
           <p class="text-lg mt-3 font-light">Your reliable weather companion</p>
         </header>
 
@@ -49,6 +49,13 @@
               placeholder="Search for a city..."
               class="w-full bg-transparent outline-none placeholder-white text-white text-lg"
             />
+            <img
+              class="cursor-pointer hover:text-blue-500 hover:scale-105"
+              id="current-location-btn"
+              width="24px"
+              src="https://cdn-icons-png.flaticon.com/512/16421/16421924.png "
+              alt="live-location"
+            />
             <button
               type="submit"
               id="search-btn"
@@ -60,13 +67,6 @@
           <div id="error-message" class="hidden text-red-500 text-center mt-4">
             Please enter a valid city name.
           </div>
-
-          <button
-            id="current-location-btn"
-            class="mt-4 w-full lg:w-1/2 bg-gradient-to-r from-green-400 to-teal-600 hover:from-teal-600 hover:to-green-400 text-white py-3 rounded-lg shadow-md transition-transform transform hover:scale-105"
-          >
-            Use Current Location
-          </button>
         </section>
 
         <!-- Recent Searches Dropdown -->

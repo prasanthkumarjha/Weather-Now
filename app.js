@@ -32,7 +32,7 @@ async function fetchWeatherCurrentData(location) {
   try {
     removeError(); //Remove previous error
     const response = await fetch(
-      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=5`
+      `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=6&`
     );
     if (!response.ok) {
       throw new Error("Failed to fetch weather data. Please try again.");
@@ -82,16 +82,16 @@ function updateForecastUI(forecastData) {
   const forecastContainer = document.getElementById("forecast-cards");
   forecastContainer.innerHTML = ""; // Clear existing cards
 
-  forecastData.forEach((day) => {
+  forecastData.slice(1).forEach((day) => {
+    //Scliced the current day forecast
     const forecastCard = document.createElement("div");
     forecastCard.className =
       "bg-white/20 backdrop-blur-md rounded-xl p-4 text-center text-white shadow-lg";
 
     forecastCard.innerHTML = `
-        <p class="text-lg font-medium">${new Date(day.date).toLocaleDateString(
-          "en-US",
-          { weekday: "long" }
-        )}</p>
+        <p class="text-lg font-medium">${new Date(
+          day.date
+        ).toLocaleDateString()}</p>
         <img
           src="https:${day.day.condition.icon}"
           alt="${day.day.condition.text}"
@@ -112,7 +112,7 @@ function showError(message) {
   errorMessage.textContent = message;
   errorMessage.classList.remove("hidden");
 }
-// Removes Error Message 
+// Removes Error Message
 function removeError() {
   const errorMessage = document.getElementById("error-message");
   errorMessage.classList.add("hidden");
@@ -120,48 +120,48 @@ function removeError() {
 
 // Update recent city
 function updateRecentCity(city) {
-    if (!recentCities.includes(city)) {
-      if (recentCities.length >= 5) {
-        recentCities.shift();
-      }
-      recentCities.push(city);
-      localStorage.setItem("cities", JSON.stringify(recentCities));
-      renderRecentCities();
+  if (!recentCities.includes(city)) {
+    if (recentCities.length >= 5) {
+      recentCities.shift();
     }
+    recentCities.push(city);
+    localStorage.setItem("cities", JSON.stringify(recentCities));
+    renderRecentCities();
   }
+}
 
 // Display Recent city
 function renderRecentCities() {
-    const dropdown = document.getElementById("recent-cities-dropdown");
-    dropdown.innerHTML = "";
-  
-    if (!recentCities.length) {
-      dropdown.classList.add("hidden");
-      return;
-    } else {
-      dropdown.classList.remove("hidden");
-  
-      const defaultOption = document.createElement("option");
-      defaultOption.value = "";
-      defaultOption.innerText = "Recent Cities";
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
-      dropdown.appendChild(defaultOption);
-  
-      recentCities.forEach((city) => {
-        const option = document.createElement("option");
-        option.value = city;
-        option.innerText = city;
-        dropdown.appendChild(option);
-      });
-  
-      dropdown.onchange = (e) => {
-        const selectedCity = e.target.value;
-        if (selectedCity) {
-          fetchWeatherCurrentData(selectedCity);
-        }
-      };
-    }
-  }
+  const dropdown = document.getElementById("recent-cities-dropdown");
+  dropdown.innerHTML = "";
 
-  renderRecentCities(); //Render cities on load
+  if (!recentCities.length) {
+    dropdown.classList.add("hidden");
+    return;
+  } else {
+    dropdown.classList.remove("hidden");
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.innerText = "Recent Cities";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    dropdown.appendChild(defaultOption);
+
+    recentCities.forEach((city) => {
+      const option = document.createElement("option");
+      option.value = city;
+      option.innerText = city;
+      dropdown.appendChild(option);
+    });
+
+    dropdown.onchange = (e) => {
+      const selectedCity = e.target.value;
+      if (selectedCity) {
+        fetchWeatherCurrentData(selectedCity);
+      }
+    };
+  }
+}
+
+renderRecentCities(); //Render cities on load
