@@ -4,7 +4,6 @@ const searchForm = document.getElementById("search-form");
 const currentLocation = document.getElementById("current-location-btn");
 const recentCities = JSON.parse(localStorage.getItem("cities")) || [];
 
-
 // Form submission
 searchForm.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -18,10 +17,20 @@ searchForm.addEventListener("submit", (e) => {
   }
 });
 
+// Triggering for current location
+currentLocation.addEventListener("click", () => {
+  navigator.geolocation.getCurrentPosition((position) => {
+    const { latitude, longitude } = position.coords;
+
+    fetchWeatherCurrentData(`${latitude},${longitude}`);
+  }),
+    () => showError("Unable to fetch your location. Please try again.");
+});
+
 // Fetch current data function form api
 async function fetchWeatherCurrentData(location) {
   try {
-    removeError();
+    removeError(); //Remove previous error
     const response = await fetch(
       `https://api.weatherapi.com/v1/forecast.json?key=${apiKey}&q=${location}&days=5`
     );
@@ -38,7 +47,6 @@ async function fetchWeatherCurrentData(location) {
 }
 
 // Update Weather UI
-
 function updateWeatherUI(data) {
   // Access required elements
   const locationName = document.getElementById("location-name");
@@ -51,6 +59,7 @@ function updateWeatherUI(data) {
   const weatherCard = document.getElementById("weather-card");
   const foreCast = document.getElementById("forecast");
 
+  //Show weather UI by removing hidden class
   weatherCard.classList.remove("hidden");
   foreCast.classList.remove("hidden");
 
@@ -68,6 +77,34 @@ function updateWeatherUI(data) {
   windSpeed.textContent = `Wind: ${data.current.wind_kph} km/h`;
 }
 
+// Update Forecast UI
+function updateForecastUI(forecastData) {
+  const forecastContainer = document.getElementById("forecast-cards");
+  forecastContainer.innerHTML = ""; // Clear existing cards
+
+  forecastData.forEach((day) => {
+    const forecastCard = document.createElement("div");
+    forecastCard.className =
+      "bg-white/20 backdrop-blur-md rounded-xl p-4 text-center text-white shadow-lg";
+
+    forecastCard.innerHTML = `
+        <p class="text-lg font-medium">${new Date(day.date).toLocaleDateString(
+          "en-US",
+          { weekday: "long" }
+        )}</p>
+        <img
+          src="https:${day.day.condition.icon}"
+          alt="${day.day.condition.text}"
+          class="w-16 h-16 mx-auto my-2"
+        />
+        <p class="text-2xl font-bold">${day.day.avgtemp_c}°C</p>
+        <p class="text-gray-300">Wind: ${day.day.maxwind_kph} km/h</p>
+        <p class="text-gray-300">Humidity: ${day.day.avghumidity}%</p>
+      `;
+
+    forecastContainer.appendChild(forecastCard);
+  });
+}
 
 // Show Error Messages
 function showError(message) {
@@ -75,8 +112,56 @@ function showError(message) {
   errorMessage.textContent = message;
   errorMessage.classList.remove("hidden");
 }
+// Removes Error Message 
 function removeError() {
   const errorMessage = document.getElementById("error-message");
   errorMessage.classList.add("hidden");
 }
 
+// Update recent city
+function updateRecentCity(city) {
+    if (!recentCities.includes(city)) {
+      if (recentCities.length >= 5) {
+        recentCities.shift();
+      }
+      recentCities.push(city);
+      localStorage.setItem("cities", JSON.stringify(recentCities));
+      renderRecentCities();
+    }
+  }
+
+// Display Recent city
+function renderRecentCities() {
+    const dropdown = document.getElementById("recent-cities-dropdown");
+    dropdown.innerHTML = "";
+  
+    if (!recentCities.length) {
+      dropdown.classList.add("hidden");
+      return;
+    } else {
+      dropdown.classList.remove("hidden");
+  
+      const defaultOption = document.createElement("option");
+      defaultOption.value = "";
+      defaultOption.innerText = "Recent Cities";
+      defaultOption.disabled = true;
+      defaultOption.selected = true;
+      dropdown.appendChild(defaultOption);
+  
+      recentCities.forEach((city) => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.innerText = city;
+        dropdown.appendChild(option);
+      });
+  
+      dropdown.onchange = (e) => {
+        const selectedCity = e.target.value;
+        if (selectedCity) {
+          fetchWeatherCurrentData(selectedCity);
+        }
+      };
+    }
+  }
+
+  renderRecentCities(); //Render cities on load
