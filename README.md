@@ -12,7 +12,7 @@
 
 ## 📂 GitHub Repository
 
-## Access the source code here: [Weather Forecast App Repository](https://github.com/prasanthkumarjha/Weather-Update.git)
+## Access the source code here: [Weather Forecast App Repository](https://github.com/prasanthkumarjha/Weather-Update)
 
 ## ✨ Features
 
