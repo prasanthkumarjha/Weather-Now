@@ -8,7 +8,8 @@
 
 ## 🌐 Live Demo
 View the live application here: [Weather Forecast App](https://weather-update-api.vercel.app/)
-
+📂 GitHub Repository
+Access the source code here: [Weather Forecast App Repository](https://github.com/prasanthkumarjha/Weather-Update.git)
 ---
 
 ## ✨ Features
