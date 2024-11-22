@@ -1,18 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Meta Tags -->
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Weather Now provides accurate, real-time weather updates, extended forecasts, and location-based weather data. Stay prepared with our user-friendly app."
+    />
+    <meta
+      name="keywords"
+      content="weather, weather forecast, real-time weather, location weather, weather app, 5-day forecast"
+    />
+    <meta name="author" content="Prasanth" />
+    <!-- Title -->
     <title>Weather Now - Real-Time Weather Updates</title>
     <!-- CSS link -->
     <link rel="stylesheet" href="./style.css" />
+    <!-- fav icon -->
+    <link
+      rel="shortcut icon"
+      href="https://cdn-icons-png.flaticon.com/512/1163/1163759.png "
+      type="image/x-icon"
+    />
   </head>
   <body>
-    <header class="text-white text-center py-4">
-      <h1 class="text-5xl font-extrabold drop-shadow-lg">Weather Now</h1>
-      <p class="text-lg mt-3 font-light">Your reliable weather companion</p>
-    </header>
+    <div
+      class="min-h-screen flex justify-center items-center bg-gradient-to-br from-sky-600 via-blue-800 to-indigo-900 p-8"
+    >
+      <div
+        class="lg:w-full flex flex-col items-center lg:max-w-5xl lg:bg-white/10 lg:backdrop-blur-md lg:rounded-3xl lg:p-8 lg:shadow-2xl"
+      >
+        <!-- Header -->
+        <header class="text-white text-center py-4">
+          <h1 class="text-5xl font-extrabold drop-shadow-lg">Weather Now</h1>
+          <p class="text-lg mt-3 font-light">Your reliable weather companion</p>
+        </header>
 
+        <!-- Search Section -->
+        <section class="w-full text-center max-w-lg mt-8">
+          <form
+            id="search-form"
+            class="flex items-center gap-4 bg-white/20 backdrop-blur-md p-4 rounded-lg shadow-lg"
+          >
+            <input
+              type="text"
+              id="city-search"
+              placeholder="Search for a city..."
+              class="w-full bg-transparent outline-none placeholder-white text-white text-lg"
+            />
+            <button
+              type="submit"
+              id="search-btn"
+              class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-indigo-600 hover:to-blue-500 text-white py-2 px-4 rounded-lg shadow-md transition-transform transform hover:scale-105"
+            >
+              Search
+            </button>
+          </form>
+          <div id="error-message" class="hidden text-red-500 text-center mt-4">
+            Please enter a valid city name.
+          </div>
+
+          <button
+            id="current-location-btn"
+            class="mt-4 w-full lg:w-1/2 bg-gradient-to-r from-green-400 to-teal-600 hover:from-teal-600 hover:to-green-400 text-white py-3 rounded-lg shadow-md transition-transform transform hover:scale-105"
+          >
+            Use Current Location
+          </button>
+        </section>
+
+        <!-- Recent Searches Dropdown -->
+        <section class="w-full max-w-lg mt-6">
+          <div class="relative">
+            <select
+              id="recent-cities-dropdown"
+              class="w-full px-4 py-3 rounded-lg shadow-md text-gray-700 bg-white/80 backdrop-blur-md"
+            >
+              <!-- options will be added dynamically -->
+            </select>
+          </div>
+        </section>
+
+        <!-- Weather Card -->
+        <section id="weather-card" class="w-full max-w-4xl mt-10 hidden">
+          <div
+            class="bg-white/20 backdrop-blur-md rounded-2xl p-8 shadow-lg text-white flex flex-col md:flex-row items-center gap-8"
+          >
+            <div class="flex flex-col items-center">
+              <img
+                id="weather-icon"
+                src="placeholder-icon.png"
+                alt="Weather Icon"
+                class="w-32 h-32"
+              />
+              <h2 id="location-name" class="text-3xl font-bold mt-4">
+                Location
+              </h2>
+              <p id="current-date" class="text-lg text-gray-300">Date</p>
+            </div>
+            <div class="flex-grow">
+              <div class="text-center md:text-left">
+                <h3 id="temperature" class="text-6xl font-extrabold">--°C</h3>
+                <p id="condition" class="text-xl text-gray-200 mt-2">
+                  Condition
+                </p>
+              </div>
+              <div class="flex justify-between mt-6">
+                <p id="humidity" class="text-gray-300">Humidity: --%</p>
+                <p id="wind-speed" class="text-gray-300">Wind: -- km/h</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Extended Forecast -->
+        <section class="w-full max-w-4xl mt-12 hidden" id="forecast">
+          <h3 class="text-white text-xl mb-4">5-Day Forecast</h3>
+          <div
+            id="forecast-cards"
+            class="grid grid-cols-1 md:grid-cols-5 gap-6"
+          >
+            <!-- Cards will be added dynamically -->
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="mt-16 text-white text-center text-sm">
+          <p>Powered by <a href="#" class="underline">YourWeatherAPI</a></p>
+        </footer>
+      </div>
+    </div>
     <script src="./app.js"></script>
   </body>
 </html>
