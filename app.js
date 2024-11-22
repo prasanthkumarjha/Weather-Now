@@ -19,12 +19,18 @@ searchForm.addEventListener("submit", (e) => {
 
 // Triggering for current location
 currentLocation.addEventListener("click", () => {
-  navigator.geolocation.getCurrentPosition((position) => {
-    const { latitude, longitude } = position.coords;
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
 
-    fetchWeatherCurrentData(`${latitude},${longitude}`);
-  }),
-    () => showError("Unable to fetch your location. Please try again.");
+        fetchWeatherCurrentData(`${latitude},${longitude}`);
+      },
+      () => showError("Unable to fetch your location. Please try again.")
+    );
+  } else {
+    showError("Geolocation is not supported by this browser.");
+  }
 });
 
 // Fetch current data function form api
